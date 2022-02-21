@@ -1,0 +1,6 @@
+<?xml version="1.0" encoding="utf-8"?>
+<ProjectSchemaDefinitions xmlns="http://schemas.microsoft.com/build/2009/properties">
+  <ItemType Name="markdown1" DisplayName="Markdown1" />
+  <ContentType Name="markdown1" ItemType="markdown1" DisplayName="Markdown1" />
+  <FileExtension Name=".md" ContentType="markdown1" />
+</ProjectSchemaDefinitions>

@@ -1,0 +1,47 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Project xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <ItemGroup>
+    <PropertyPageSchema Include="$(MSBuildThisFileDirectory)psd.xml" />
+    <AvailableItemName Include="markdown1">
+      <Targets>MARKDOWN1</Targets>
+    </AvailableItemName>
+  </ItemGroup>
+
+  <Target
+    Name="MARKDOWN1"
+    Condition="'@(markdown1)' != ''"
+    BeforeTargets="ClCompile">
+
+    <Message Importance="High" Text="Converting markdowns" />
+
+    <!--
+    <ItemGroup>
+      <ShaderHeader Include="*.hlsli" />
+    </ItemGroup>
+    <PropertyGroup>
+      <ShaderHeaders>@(ShaderHeader)</ShaderHeaders>
+    </PropertyGroup>
+    -->
+
+    <!-- Setup metadata for custom build tool -->
+    <ItemGroup>
+      <markdown1>
+        <Message>%(Filename)%(Extension)</Message>
+        <Command>
+          copy /y %(Identity) $(OutDir)%(Filename).rtf
+          copy /y %(Identity) $(OutDir)%(Filename).html
+        </Command>
+        <!--<AdditionalInputs>$(ShaderHeaders)</AdditionalInputs>-->
+        <Outputs>$(OutDir)%(Filename).rtf;$(OutDir)%(Filename).html</Outputs>
+      </markdown1>
+    </ItemGroup>
+
+    <!-- Compile by forwarding to the Custom Build Tool infrastructure,
+         so it will take care of .tlogs and error/warning parsing -->
+    <CustomBuild
+      Sources="@(markdown1)"
+      MinimalRebuildFromTracking="true"
+      TrackerLogDirectory="$(TLogLocation)"
+      ErrorListRegex="(?'FILENAME'.+):(?'LINE'\d+):(?'COLUMN'\d+): (?'CATEGORY'error|warning): (?'TEXT'.*)" />
+  </Target>
+</Project>
